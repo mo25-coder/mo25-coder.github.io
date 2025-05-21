@@ -59,6 +59,14 @@
       color: #99004d;
     }
   </style>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ffd6e0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-icon" href="icon.png">
+
 </head>
 <body>
 
@@ -136,6 +144,13 @@
 
     updateCountdown(); // أول مرة
     setInterval(updateCountdown, 1000); // كل ثانية
+
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('✅ تم تسجيل Service Worker'))
+        .catch(err => console.error('❌ خطأ في Service Worker', err));
+    }
   </script>
 
 </body>
