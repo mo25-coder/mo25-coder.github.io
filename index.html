@@ -68,7 +68,7 @@
     <p class="message" id="birthday-message">بحبك أوي ومش عارف أوصف قد إيه انتي أغلى حاجة في حياتي 💝</p>
   </div>
 
-  <audio id="birthday-audio" src="happy-birthday.mp3"></audio>
+  <audio id="birthday-audio" src="happy-birthday.m4a"></audio>
   <div id="balloons-container"></div>
 
   <script>
@@ -91,11 +91,14 @@
     const audio = document.getElementById("birthday-audio");
     const container = document.getElementById("balloons-container");
 
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const distance = birthdayDate.getTime() - now;
+      function updateCountdown() {
+      const now = new Date();
+      const todayDay = now.getDate();
+      const todayMonth = now.getMonth(); // يبدأ من 0
 
-      if (distance <= 0) {
+      const isBirthdayToday = (todayDay === birthdayDay && todayMonth === birthdayMonth);
+
+      if (isBirthdayToday) {
         // يوم عيد الميلاد 🎉
         document.querySelector("h1").textContent = "كل سنة وانتي طيبة يا ماما! 💖";
         countdownEl.style.display = "none";
@@ -106,18 +109,22 @@
           document.body.addEventListener("click", () => audio.play());
         });
 
-        // بالونات 🎈
-        for (let i = 0; i < 20; i++) {
-          const balloon = document.createElement("div");
-          balloon.className = "balloon";
-          balloon.style.left = Math.random() * 100 + "vw";
-          balloon.style.animationDuration = (4 + Math.random() * 3) + "s";
-          balloon.textContent = ["🎈", "💗", "💖", "🎉", "💝"][Math.floor(Math.random() * 5)];
-          container.appendChild(balloon);
+        // بالونات 🎈 (مرة واحدة فقط)
+        if (!window.balloonsDisplayed) {
+          for (let i = 0; i < 20; i++) {
+            const balloon = document.createElement("div");
+            balloon.className = "balloon";
+            balloon.style.left = Math.random() * 100 + "vw";
+            balloon.style.animationDuration = (4 + Math.random() * 3) + "s";
+            balloon.textContent = ["🎈", "💗", "💖", "🎉", "💝"][Math.floor(Math.random() * 5)];
+            container.appendChild(balloon);
+          }
+          window.balloonsDisplayed = true;
         }
 
       } else {
         // العد التنازلي
+        const distance = birthdayDate.getTime() - now.getTime();
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
